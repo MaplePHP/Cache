@@ -14,7 +14,7 @@ $cache = new Cache(new FileSystemHandler(dirname(__FILE__)."/storage/cache"));
 ## Usage
 It is super easy to use
 ```php
-$expireInOneHour = time()+3600;
+$expireInOneHour = 3600; // 3600 seconds = 1 hour
 if(!$cache->has("test") && $cache->set("test", "Lorem ipsum dolor", $expireInOneHour)) {
 	echo "Cache has been set<br>";
 }
@@ -37,6 +37,7 @@ try {
 
 ### File system
 Save cache as a file on you system.
+
 **Arg1:** (string) Path to directory where you want to save the cache fiels
 ```php
 use PHPFuse\Cache\Handlers\FileSystemHandler;
@@ -44,7 +45,7 @@ $fileSystem = new FileSystemHandler(dirname(__FILE__)."/storage/cache");
 ```
 
 ### Memcached
-Use Memcached to save cache in memory (high performance)
+Use Memcached to save cache in memory **(high performance)**
 
 **Arg1:** (string|array) Host to server (or get default with class constant "MemcachedHandler::HOST")
 
@@ -57,8 +58,9 @@ use PHPFuse\Cache\Handlers\MemcachedHandler;
 $memcached = new MemcachedHandler(MemcachedHandler::HOST, MemcachedHandler::PORT, MemcachedHandler::WEIGHT);
 // Multiple servers
 $memcached = new MemcachedHandler([
-	["Memcached.server1.com", 11211, 1] // Weight "1" (this server has priority)
+	["Memcached.server1.com", 11211, 1], // Weight "1" (this server has priority)
 	["Memcached.server2.com", 11212, 2]
+	["Memcached.server3.com", 11300, 3]
 ]);
 ```
 
@@ -77,7 +79,7 @@ $cache->has("test");
 It is allowed to set cache values of mixed types like strings, arrays and including PSR-7: HTTP Streams. Will return bool.
 ```php
 // Set cache with 1 hour lifetime
-$cache->set("test", "Lorem ipsum dolor", time()+3600);
+$cache->set("test", "Lorem ipsum dolor", 3600);
 // Set cache that will persist
 $cache->set("test2", "Lorem ipsum dolor");
 ```
@@ -99,7 +101,7 @@ $cache->getMultiple(["test1", "test2"], "Default value");
 #### Set multiple cache items
 Will return bool 
 ```php
-$cache->setMultiple(["test1" => "Lorem", "test2" => "Ipsum"], time()+3600);
+$cache->setMultiple(["test1" => "Lorem", "test2" => "Ipsum"], 3600);
 ```
 #### Delete multiple cache items
 Will return bool
@@ -117,7 +119,7 @@ $item = $cache->getItem('test');
 
 try {
 	if(!$item->isHit()) {
-		$item->set(["Lorem 1", "Lorem 2"])->expiresAfter(time()+3600);
+		$item->set(["Lorem 1", "Lorem 2"])->expiresAfter(3600);
 		$cache->save($item);
 
 		echo "Insert to cache: ";
