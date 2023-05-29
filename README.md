@@ -1,3 +1,4 @@
+
 # PHPFuse - Cache
 PHPFuse Cache, a clean and user-friendly caching library. PHPFuse Cache is designed to provide a seamless caching experience with simplicity and ease of use as its core principles. Whether you're familiar with **PSR-6** or **PSR-16**, this library offers a smooth and intuitive caching solution for your PHP applications.
 
@@ -45,7 +46,9 @@ $fileSystem = new FileSystemHandler(dirname(__FILE__)."/storage/cache");
 ### Memcached
 Use Memcached to save cache in memory (high performance)
 **Arg1:** (string|array) Host to server (or get default with class constant "MemcachedHandler::HOST")
+
 **Arg2:** (int|null) Port to server (or get default with class constant "MemcachedHandler::PORT")
+
 **Arg3:** (int) Weight to server (Arg is default 0 but you can also set it with default with class constant "MemcachedHandler::WEIGHT")
 ```php
 use PHPFuse\Cache\Handlers\MemcachedHandler;
