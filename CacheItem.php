@@ -92,6 +92,7 @@ class CacheItem implements CacheItemInterface {
             return $this->expiresAt->getTimestamp();
 
         } elseif (is_int($this->expiresAt)) {
+            
         	return $this->expiresAt;
             
         } else {

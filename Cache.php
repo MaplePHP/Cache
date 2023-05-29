@@ -21,6 +21,15 @@ class Cache implements CacheInterface
     }
 
     /**
+     * Get all set keys
+     * @return array|bool
+     */
+    public function getAllKeys(): array 
+    {
+        return $this->handler->getAllKeys();
+    }
+
+    /**
      * Get cache value
      * @param  string     $key      The key of the item
      * @param  mixed|null $default  Return default value if miss

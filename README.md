@@ -32,6 +32,32 @@ try {
 }
 ```
 
+## Handlers
+
+### File system
+Save cache as a file on you system.
+**Arg1:** (string) Path to directory where you want to save the cache fiels
+```php
+use PHPFuse\Cache\Handlers\FileSystemHandler;
+$fileSystem = new FileSystemHandler(dirname(__FILE__)."/storage/cache");
+```
+
+### Memcached
+Use Memcached to save cache in memory (high performance)
+**Arg1:** (string|array) Host to server (or get default with class constant "MemcachedHandler::HOST")
+**Arg2:** (int|null) Port to server (or get default with class constant "MemcachedHandler::PORT")
+**Arg3:** (int) Weight to server (Arg is default 0 but you can also set it with default with class constant "MemcachedHandler::WEIGHT")
+```php
+use PHPFuse\Cache\Handlers\MemcachedHandler;
+// One server
+$memcached = new MemcachedHandler(MemcachedHandler::HOST, MemcachedHandler::PORT, MemcachedHandler::WEIGHT);
+// Multiple servers
+$memcached = new MemcachedHandler([
+	["Memcached.server1.com", 11211, 1] // Weight "1" (this server has priority)
+	["Memcached.server2.com", 11212, 2]
+]);
+```
+
 ## Command list (PSR-16)
 #### Get a cache item
 Can return mixed values if successful if miss then return default value. The default value is **not** required and is by default **null**.

@@ -39,6 +39,23 @@ class FileSystemHandler extends CachePoolAbstract
     }
 
     /**
+     * Get all set keys
+     * @return array|bool
+     */
+    public function getAllKeys(): array
+    {
+        $new = array();
+        $files = glob("{$this->cacheDirectory}/*.cache");
+        foreach($files as $file) {
+            $file = basename($file);
+            $exp = explode(".", $file);
+            array_pop($exp);
+            $new[] = implode(".", $exp);
+        }
+        return $new;
+    }
+
+    /**
      * Clear and remove all cache items and data
      * @param  string  $key
      * @return bool
@@ -78,12 +95,12 @@ class FileSystemHandler extends CachePoolAbstract
      */
     protected function setSave(CacheItemInterface $item): bool 
     {
+        if(!is_dir($this->cacheDirectory)) throw new CacheException("The cache directory is not a directory: {$this->cacheDirectory}", 1);
         if(!is_writeable($this->cacheDirectory)) throw new CacheException("The cache filesystem directory is not writable!", 1);
-
 
         $data = serialize([
             "value" => $item->get(),
-            "expiresAfter" => $item->getExpiration()
+            "expiresAfter" => $this->setExpiration($item)
         ]);
 
         $path = $this->getCacheFilePath($item->getKey());

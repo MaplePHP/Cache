@@ -41,6 +41,15 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     abstract protected function setClear(): bool;
 
+
+    /**
+     * Get all keys
+     * @return array|false
+     */
+    abstract public function getAllKeys(): array;
+
+
+
     /**
      * Get cache item instance
      * @param  string $key
@@ -120,8 +129,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
     public function clear(): bool
     {
         $this->items = array();
-        $this->clearAll();
-        return true;
+        return $this->setClear();
     }
 
     /**
@@ -165,6 +173,10 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
             if(!$this->save($item)) return false;
         }
         return true;
+    }
+
+    function setExpiration(CacheItemInterface $item) {
+        return ($item->getExpiration() > 0) ? time()+$item->getExpiration() : 0;
     }
 
     /**
