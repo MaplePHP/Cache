@@ -59,7 +59,7 @@ $memcached = new MemcachedHandler(MemcachedHandler::HOST, MemcachedHandler::PORT
 // Multiple servers
 $memcached = new MemcachedHandler([
 	["Memcached.server1.com", 11211, 1], // Weight "1" (this server has priority)
-	["Memcached.server2.com", 11212, 2]
+	["Memcached.server2.com", 11212, 2],
 	["Memcached.server3.com", 11300, 3]
 ]);
 ```
