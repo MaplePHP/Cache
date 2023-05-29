@@ -45,6 +45,7 @@ $fileSystem = new FileSystemHandler(dirname(__FILE__)."/storage/cache");
 
 ### Memcached
 Use Memcached to save cache in memory (high performance)
+
 **Arg1:** (string|array) Host to server (or get default with class constant "MemcachedHandler::HOST")
 
 **Arg2:** (int|null) Port to server (or get default with class constant "MemcachedHandler::PORT")
