@@ -1,17 +1,16 @@
 <?php
+
 namespace PHPFuse\Cache\Handlers;
 
 use PHPFuse\Cache\Interfaces\CacheItemInterface;
 use PHPFuse\Cache\Exceptions\CacheException;
 use PHPFuse\Cache\CachePoolAbstract;
 
-
 class FileSystemHandler extends CachePoolAbstract
 {
-
     private $cacheDirectory;
 
-    function __construct(string $cacheDirectory) 
+    public function __construct(string $cacheDirectory)
     {
         $this->cacheDirectory = rtrim($cacheDirectory, "/");
     }
@@ -26,15 +25,16 @@ class FileSystemHandler extends CachePoolAbstract
         $key = $item->getKey();
         $path = $this->getCacheFilePath($key);
 
-        if(is_file($path)) {
-            if(!is_readable($path)) throw new CacheException("The cache file ({$path}) is not readable!", 1);
+        if (is_file($path)) {
+            if (!is_readable($path)) {
+                throw new CacheException("The cache file ({$path}) is not readable!", 1);
+            }
             $data = file_get_contents($path);
 
-            if(($data = unserialize($data)) && isset($data['expiresAfter'])) {
+            if (($data = unserialize($data)) && isset($data['expiresAfter'])) {
                 $item->set($data['value']);
                 $item->expiresAfter((int)$data['expiresAfter']);
             }
-            
         }
     }
 
@@ -46,7 +46,7 @@ class FileSystemHandler extends CachePoolAbstract
     {
         $new = array();
         $files = glob("{$this->cacheDirectory}/*.cache");
-        foreach($files as $file) {
+        foreach ($files as $file) {
             $file = basename($file);
             $exp = explode(".", $file);
             array_pop($exp);
@@ -63,8 +63,8 @@ class FileSystemHandler extends CachePoolAbstract
     protected function setClear(): bool
     {
         $files = glob("{$this->cacheDirectory}/*.cache");
-        foreach($files as $file) {
-            if(is_file($file) && is_writable($file)) {
+        foreach ($files as $file) {
+            if (is_file($file) && is_writable($file)) {
                 unlink($file);
             } else {
                 return false;
@@ -72,7 +72,7 @@ class FileSystemHandler extends CachePoolAbstract
         }
         return true;
     }
-    
+
     /**
      * Clear and remove cache item and data
      * @param  string  $key
@@ -81,7 +81,7 @@ class FileSystemHandler extends CachePoolAbstract
     protected function setDelete($key): bool
     {
         $path = $this->getCacheFilePath($key);
-        if(is_file($path) && is_writable($path)) {
+        if (is_file($path) && is_writable($path)) {
             unlink($path);
             return true;
         }
@@ -93,10 +93,14 @@ class FileSystemHandler extends CachePoolAbstract
      * @param  string  $key
      * @return bool
      */
-    protected function setSave(CacheItemInterface $item): bool 
+    protected function setSave(CacheItemInterface $item): bool
     {
-        if(!is_dir($this->cacheDirectory)) throw new CacheException("The cache directory is not a directory: {$this->cacheDirectory}", 1);
-        if(!is_writeable($this->cacheDirectory)) throw new CacheException("The cache filesystem directory is not writable!", 1);
+        if (!is_dir($this->cacheDirectory)) {
+            throw new CacheException("The cache directory is not a directory: {$this->cacheDirectory}", 1);
+        }
+        if (!is_writeable($this->cacheDirectory)) {
+            throw new CacheException("The cache filesystem directory is not writable!", 1);
+        }
 
         $data = serialize([
             "value" => $item->get(),

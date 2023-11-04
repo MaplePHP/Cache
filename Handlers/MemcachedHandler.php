@@ -1,4 +1,5 @@
 <?php
+
 namespace PHPFuse\Cache\Handlers;
 
 use PHPFuse\Cache\Interfaces\CacheItemInterface;
@@ -7,26 +8,26 @@ use PHPFuse\Cache\CachePoolAbstract;
 
 use Memcached;
 
-
 class MemcachedHandler extends CachePoolAbstract
 {
-
-    const HOST = "127.0.0.1";
-    const PORT = 11211;
-    const WEIGHT = 0;
+    public const HOST = "127.0.0.1";
+    public const PORT = 11211;
+    public const WEIGHT = 0;
 
     private $handler;
     private $servers = array();
     private $stats;
 
-    function __construct(string|array $host, ?int $port = NULL, int $weight = 0) 
+    public function __construct(string|array $host, ?int $port = null, int $weight = 0)
     {
 
-        if(!class_exists("Memcached")) throw new CacheException("The PHP package \"Memcached\" is missing!", 1);
-        
+        if (!class_exists("Memcached")) {
+            throw new CacheException("The PHP package \"Memcached\" is missing!", 1);
+        }
+
 
         $this->handler = new Memcached();
-        if(is_string($host)) {
+        if (is_string($host)) {
             $this->servers[] = [$host, $port, $weight];
         } else {
             $this->servers = $host;
@@ -42,7 +43,7 @@ class MemcachedHandler extends CachePoolAbstract
     public function getAllKeys(): array
     {
         $arr = $this->handler->getAllKeys();
-        if($arr === false) {
+        if ($arr === false) {
             $this->validate();
             return [];
         }
@@ -57,12 +58,12 @@ class MemcachedHandler extends CachePoolAbstract
     protected function setItem(CacheItemInterface $item): void
     {
         $key = $item->getKey();
-        if($data = $this->handler->get($key)) {
-            if(($data = unserialize($data)) && isset($data['expiresAfter'])) {
+        if ($data = $this->handler->get($key)) {
+            if (($data = unserialize($data)) && isset($data['expiresAfter'])) {
                 $item->set($data['value']);
                 $item->expiresAfter((int)$data['expiresAfter']);
             }
-        }   
+        }
     }
 
     /**
@@ -72,15 +73,19 @@ class MemcachedHandler extends CachePoolAbstract
      */
     protected function setClear(): bool
     {
-        if(($data = $this->getAllKeys()) && count($data) > 0) {
+        if (($data = $this->getAllKeys()) && count($data) > 0) {
             $rsp = $this->handler->deleteMulti($data);
             $this->validate();
-            foreach($rsp as $v) if((int)$v !== 1) return false;
+            foreach ($rsp as $v) {
+                if ((int)$v !== 1) {
+                    return false;
+                }
+            }
             return true;
         }
         return false;
     }
-    
+
     /**
      * Clear and remove cache item and data
      * @param  string  $key
@@ -88,9 +93,9 @@ class MemcachedHandler extends CachePoolAbstract
      */
     protected function setDelete($key): bool
     {
-       $bool = $this->handler->delete($key);
-       $this->validate();
-       return $bool;
+        $bool = $this->handler->delete($key);
+        $this->validate();
+        return $bool;
     }
 
     /**
@@ -98,13 +103,13 @@ class MemcachedHandler extends CachePoolAbstract
      * @param  string  $key
      * @return bool
      */
-    protected function setSave(CacheItemInterface $item): bool 
+    protected function setSave(CacheItemInterface $item): bool
     {
         $data = serialize([
             "value" => $item->get(),
             "expiresAfter" => $this->setExpiration($item)
         ]);
-        $bool = $this->handler->set($item->getKey(), $data, $item->getExpiration());   
+        $bool = $this->handler->set($item->getKey(), $data, $item->getExpiration());
         $this->validate();
         return $bool;
     }
@@ -113,7 +118,7 @@ class MemcachedHandler extends CachePoolAbstract
      * Get Memcached handler
      * @return Memcached
      */
-    final public function getMemcached(): Memcached 
+    final public function getMemcached(): Memcached
     {
         return $this->handler;
     }
@@ -122,9 +127,10 @@ class MemcachedHandler extends CachePoolAbstract
      * Validate response
      * @return bool
      */
-    final protected function validate(): bool 
+    final protected function validate(): bool
     {
-        if ($this->handler->getResultCode() !== Memcached::RES_SUCCESS && $this->handler->getResultCode() !== Memcached::RES_NOTFOUND) {
+        if ($this->handler->getResultCode() !== Memcached::RES_SUCCESS &&
+            $this->handler->getResultCode() !== Memcached::RES_NOTFOUND) {
             throw new CacheException($this->handler->getResultMessage(), 1);
             return false;
         }
@@ -135,13 +141,15 @@ class MemcachedHandler extends CachePoolAbstract
      * Connect to server-/s
      * @return void
      */
-    final protected function connect(): void 
+    final protected function connect(): void
     {
-        if(is_null($this->stats)) {
+        if (is_null($this->stats)) {
             $this->validateServers();
-            $this->handler->addServers($this->servers); 
+            $this->handler->addServers($this->servers);
             $this->stats = $this->handler->getStats();
-            if($this->stats === false) throw new CacheException("One or more server connection has failed!", 1);
+            if ($this->stats === false) {
+                throw new CacheException("One or more server connection has failed!", 1);
+            }
         }
     }
 
@@ -149,21 +157,28 @@ class MemcachedHandler extends CachePoolAbstract
      * Validate server information
      * @return void
      */
-    final protected function validateServers(): void 
+    final protected function validateServers(): void
     {
-        if(count($this->servers) > 0) {
-            foreach($this->servers as $key => $server) {
-                $host = ($server[0] ?? NULL);
-                $port = ($server[1] ?? NULL);
+        if (count($this->servers) > 0) {
+            foreach ($this->servers as $key => $server) {
+                $host = ($server[0] ?? null);
+                $port = ($server[1] ?? null);
                 $weight = ($server[1] ?? 0);
-                if(!is_string($host)) throw new CacheException("Expecting a string value in argumnet 1 (IP/Host) but got instead a ".gettype($host).".", 1);
-                if(!is_int($port)) throw new CacheException("Expecting a int value argumnet 2 (port) but got instead a ".gettype($port).".", 1);
-                if(!is_int($weight)) throw new CacheException("Expecting a int value argumnet 3 (weight) but got instead a ".gettype($weight).".", 1);
+                if (!is_string($host)) {
+                    throw new CacheException("Expecting a string value in argumnet 1 (IP/Host) but ".
+                        "got instead a ".gettype($host).".", 1);
+                }
+                if (!is_int($port)) {
+                    throw new CacheException("Expecting a int value argumnet 2 (port) but ".
+                        "got instead a ".gettype($port).".", 1);
+                }
+                if (!is_int($weight)) {
+                    throw new CacheException("Expecting a int value argumnet 3 (weight) but ".
+                        "got instead a ".gettype($weight).".", 1);
+                }
             }
-            
         } else {
             throw new CacheException("Could not find any servers", 1);
         }
     }
-
 }

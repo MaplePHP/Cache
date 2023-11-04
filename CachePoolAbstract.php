@@ -1,4 +1,5 @@
 <?php
+
 namespace PHPFuse\Cache;
 
 use PHPFuse\Cache\Interfaces\CacheItemInterface;
@@ -9,7 +10,6 @@ use PHPFuse\Cache\CacheItem;
 
 abstract class CachePoolAbstract implements CacheItemPoolInterface
 {
-
     private $items = array();
     private $timestamp;
 
@@ -57,14 +57,14 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     final public function getItem(string $key): CacheItemInterface
     {
-        if(!isset($this->items[$key])) {
+        if (!isset($this->items[$key])) {
             $this->validateKey($key);
 
             $this->items[$key] = new CacheItem($key);
             $this->setItem($this->items[$key]);
-            $value = $this->items[$key]->get();            
+            $value = $this->items[$key]->get();
 
-            if(!is_null($value) && $this->hasItemExpired($this->items[$key])) {
+            if (!is_null($value) && $this->hasItemExpired($this->items[$key])) {
                 $this->items[$key] = new CacheItem($key);
             }
         }
@@ -76,10 +76,10 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      * @param  array  $keys [description]
      * @return iterable
      */
-    public function getItems(array $keys = []): iterable 
+    public function getItems(array $keys = []): iterable
     {
         $items = array();
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             $items[$key] = $this->getItem($key);
         }
         return $items;
@@ -104,7 +104,9 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
     public function deleteItem($key): bool
     {
         $this->validateKey($key);
-        if(isset($this->items[$key])) unset($this->items[$key]);
+        if (isset($this->items[$key])) {
+            unset($this->items[$key]);
+        }
         return $this->setDelete($key);
     }
 
@@ -115,8 +117,10 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     public function deleteItems(array $keys): bool
     {
-        foreach($keys as $key) {
-            if(!$this->deleteItem($key)) return false;
+        foreach ($keys as $key) {
+            if (!$this->deleteItem($key)) {
+                return false;
+            }
         }
         return true;
     }
@@ -139,8 +143,10 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     public function save(CacheItemInterface $item): bool
     {
-        if($this->saveDeferred($item)) {
-            if(!$this->setSave($item)) return false;
+        if ($this->saveDeferred($item)) {
+            if (!$this->setSave($item)) {
+                return false;
+            }
         }
         return true;
     }
@@ -153,8 +159,8 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
     public function saveDeferred(CacheItemInterface $item): bool
     {
         $value = $item->get();
-        if(!is_null($value)) {
-            if($value instanceof StreamInterface) {
+        if (!is_null($value)) {
+            if ($value instanceof StreamInterface) {
                 $value->seek(0);
                 $value = $value->read($value->getSize());
             }
@@ -169,14 +175,17 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     public function commit(): bool
     {
-        foreach($this->items as $key => $item) {
-            if(!$this->save($item)) return false;
+        foreach ($this->items as $key => $item) {
+            if (!$this->save($item)) {
+                return false;
+            }
         }
         return true;
     }
 
-    function setExpiration(CacheItemInterface $item) {
-        return ($item->getExpiration() > 0) ? time()+$item->getExpiration() : 0;
+    public function setExpiration(CacheItemInterface $item)
+    {
+        return ($item->getExpiration() > 0) ? time() + $item->getExpiration() : 0;
     }
 
     /**
@@ -196,7 +205,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     final public function now(): int
     {
-        if(is_null($this->timestamp)) {
+        if (is_null($this->timestamp)) {
             $d = new \DateTime("now");
             $this->timestamp = $d->getTimestamp();
         }
@@ -210,11 +219,9 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     final public function validateKey(string $key): void
     {
-        if(!preg_match('/^[a-zA-Z0-9_\-.]+$/', $key)) {
-            throw new InvalidArgumentException('Invalid cache key. Only alphanumeric characters, underscores, and dots are allowed.');
+        if (!preg_match('/^[a-zA-Z0-9_\-.]+$/', $key)) {
+            throw new InvalidArgumentException('Invalid cache key. Only alphanumeric characters, '.
+                'underscores, and dots are allowed.');
         }
     }
-
- 
-
 }

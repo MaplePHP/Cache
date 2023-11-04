@@ -1,4 +1,5 @@
 <?php
+
 // Place Codes/snippets at top of test file
 
 ini_set('display_errors', 1);
@@ -10,15 +11,16 @@ $dir = dirname(__FILE__)."/../";
 
 //require_once("{$dir}../_vendors/composer/vendor/autoload.php");
 
-spl_autoload_register(function($class) use($dir, $prefix) {
-    $classFilePath = NULL;
+spl_autoload_register(function ($class) use ($dir, $prefix) {
+    $classFilePath = null;
     $class = str_replace("\\", "/", $class);
     $exp = explode("/", $class);
     $sh1 = array_shift($exp);
     $path = implode("/", $exp).".php";
-    if($sh1 !== $prefix) $path = "{$sh1}/{$path}";
+    if ($sh1 !== $prefix) {
+        $path = "{$sh1}/{$path}";
+    }
 
     $filePath = $dir."../".$path;
-    require_once($filePath);    
+    require_once($filePath);
 });
-

@@ -3,11 +3,13 @@
 namespace PHPFuse\Cache;
 
 use PHPFuse\Cache\Interfaces\CacheItemInterface;
-use DateTimeInterface, DateInterval, DateTime;
+use DateTimeInterface;
+use DateInterval;
+use DateTime;
 
-class CacheItem implements CacheItemInterface {
-
-	private $key;
+class CacheItem implements CacheItemInterface
+{
+    private $key;
     private $value;
     private $isHit;
     private $expiresAt;
@@ -37,7 +39,7 @@ class CacheItem implements CacheItemInterface {
      */
     public function get(): mixed
     {
-        return ($this->isHit()) ? $this->value : NULL;
+        return ($this->isHit()) ? $this->value : null;
     }
 
     /**
@@ -76,25 +78,22 @@ class CacheItem implements CacheItemInterface {
      * @param  int|DateInterval|null   $expiration
      * @return static
      */
-    public function expiresAfter(int|DateInterval|null $expiration): static 
+    public function expiresAfter(int|DateInterval|null $expiration): static
     {
-    	$this->expiresAt = $expiration;
-    	return $this;
+        $this->expiresAt = $expiration;
+        return $this;
     }
 
     /**
-     * Return expiration 
+     * Return expiration
      * @return int
      */
     public function getExpiration(): mixed
     {
-    	if($this->expiresAt instanceof DateTimeInterface) {
+        if ($this->expiresAt instanceof DateTimeInterface) {
             return $this->expiresAt->getTimestamp();
-
         } elseif (is_int($this->expiresAt)) {
-            
-        	return $this->expiresAt;
-            
+            return $this->expiresAt;
         } else {
             throw new \InvalidArgumentException('Invalid expiration provided');
         }
