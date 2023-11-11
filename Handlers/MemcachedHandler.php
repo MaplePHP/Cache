@@ -5,7 +5,6 @@ namespace PHPFuse\Cache\Handlers;
 use PHPFuse\Cache\Interfaces\CacheItemInterface;
 use PHPFuse\Cache\Exceptions\CacheException;
 use PHPFuse\Cache\CachePoolAbstract;
-
 use Memcached;
 
 class MemcachedHandler extends CachePoolAbstract
@@ -129,8 +128,10 @@ class MemcachedHandler extends CachePoolAbstract
      */
     final protected function validate(): bool
     {
-        if ($this->handler->getResultCode() !== Memcached::RES_SUCCESS &&
-            $this->handler->getResultCode() !== Memcached::RES_NOTFOUND) {
+        if (
+            $this->handler->getResultCode() !== Memcached::RES_SUCCESS &&
+            $this->handler->getResultCode() !== Memcached::RES_NOTFOUND
+        ) {
             throw new CacheException($this->handler->getResultMessage(), 1);
             return false;
         }
@@ -165,16 +166,16 @@ class MemcachedHandler extends CachePoolAbstract
                 $port = ($server[1] ?? null);
                 $weight = ($server[1] ?? 0);
                 if (!is_string($host)) {
-                    throw new CacheException("Expecting a string value in argumnet 1 (IP/Host) but ".
-                        "got instead a ".gettype($host).".", 1);
+                    throw new CacheException("Expecting a string value in argumnet 1 (IP/Host) but " .
+                        "got instead a " . gettype($host) . ".", 1);
                 }
                 if (!is_int($port)) {
-                    throw new CacheException("Expecting a int value argumnet 2 (port) but ".
-                        "got instead a ".gettype($port).".", 1);
+                    throw new CacheException("Expecting a int value argumnet 2 (port) but " .
+                        "got instead a " . gettype($port) . ".", 1);
                 }
                 if (!is_int($weight)) {
-                    throw new CacheException("Expecting a int value argumnet 3 (weight) but ".
-                        "got instead a ".gettype($weight).".", 1);
+                    throw new CacheException("Expecting a int value argumnet 3 (weight) but " .
+                        "got instead a " . gettype($weight) . ".", 1);
                 }
             }
         } else {

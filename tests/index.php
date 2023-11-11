@@ -56,7 +56,7 @@ die();
 
 // PSR-6
 
-$cache = new FileSystemHandler(dirname(__FILE__)."/");
+$cache = new FileSystemHandler(dirname(__FILE__) . "/");
 
 $item = $cache->getItem('test');
 

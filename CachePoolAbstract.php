@@ -220,7 +220,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
     final public function validateKey(string $key): void
     {
         if (!preg_match('/^[a-zA-Z0-9_\-.]+$/', $key)) {
-            throw new InvalidArgumentException('Invalid cache key. Only alphanumeric characters, '.
+            throw new InvalidArgumentException('Invalid cache key. Only alphanumeric characters, ' .
                 'underscores, and dots are allowed.');
         }
     }
