@@ -22,8 +22,8 @@ interface CacheItemPoolInterface
      * @param string $key
      *   The key for which to return the corresponding Cache Item.
      *
-     * @throws InvalidArgumentException
-     *   If the $key string is not a legal value a \Psr\Cache\InvalidArgumentException
+     * @throws \InvalidArgumentException
+     *   If the $key string is not a legal value a \InvalidArgumentException
      *   MUST be thrown.
      *
      * @return CacheItemInterface
@@ -37,8 +37,8 @@ interface CacheItemPoolInterface
      * @param string[] $keys
      *   An indexed array of keys of items to retrieve.
      *
-     * @throws InvalidArgumentException
-     *   If any of the keys in $keys are not a legal value a \Psr\Cache\InvalidArgumentException
+     * @throws \InvalidArgumentException
+     *   If any of the keys in $keys are not a legal value a \InvalidArgumentException
      *   MUST be thrown.
      *
      * @return iterable
@@ -59,8 +59,8 @@ interface CacheItemPoolInterface
      * @param string $key
      *   The key for which to check existence.
      *
-     * @throws InvalidArgumentException
-     *   If the $key string is not a legal value a \Psr\Cache\InvalidArgumentException
+     * @throws \InvalidArgumentException
+     *   If the $key string is not a legal value a \InvalidArgumentException
      *   MUST be thrown.
      *
      * @return bool
@@ -82,8 +82,8 @@ interface CacheItemPoolInterface
      * @param string $key
      *   The key to delete.
      *
-     * @throws InvalidArgumentException
-     *   If the $key string is not a legal value a \Psr\Cache\InvalidArgumentException
+     * @throws \InvalidArgumentException
+     *   If the $key string is not a legal value a \InvalidArgumentException
      *   MUST be thrown.
      *
      * @return bool
@@ -97,8 +97,8 @@ interface CacheItemPoolInterface
      * @param string[] $keys
      *   An array of keys that should be removed from the pool.
      *
-     * @throws InvalidArgumentException
-     *   If any of the keys in $keys are not a legal value a \Psr\Cache\InvalidArgumentException
+     * @throws \InvalidArgumentException
+     *   If any of the keys in $keys are not a legal value a \InvalidArgumentException
      *   MUST be thrown.
      *
      * @return bool

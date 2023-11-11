@@ -67,7 +67,6 @@ class MemcachedHandler extends CachePoolAbstract
 
     /**
      * Clear and remove all cache items and data
-     * @param  string  $key
      * @return bool
      */
     protected function setClear(): bool
@@ -99,7 +98,7 @@ class MemcachedHandler extends CachePoolAbstract
 
     /**
      * Create cache
-     * @param  string  $key
+     * @param  CacheItemInterface  $item
      * @return bool
      */
     protected function setSave(CacheItemInterface $item): bool
@@ -133,7 +132,7 @@ class MemcachedHandler extends CachePoolAbstract
             $this->handler->getResultCode() !== Memcached::RES_NOTFOUND
         ) {
             throw new CacheException($this->handler->getResultMessage(), 1);
-            return false;
+            //return false;
         }
         return true;
     }
@@ -161,7 +160,7 @@ class MemcachedHandler extends CachePoolAbstract
     final protected function validateServers(): void
     {
         if (count($this->servers) > 0) {
-            foreach ($this->servers as $key => $server) {
+            foreach ($this->servers as $server) {
                 $host = ($server[0] ?? null);
                 $port = ($server[1] ?? null);
                 $weight = ($server[1] ?? 0);

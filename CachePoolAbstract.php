@@ -36,7 +36,6 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
 
     /**
      * HANDLER: @setClear and the pass on to @clear pool
-     * @param CacheItemInterface $item
      * @return bool
      */
     abstract protected function setClear(): bool;
@@ -127,7 +126,6 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
 
     /**
      * Clear and remove all cache items and data
-     * @param  string  $key
      * @return bool
      */
     public function clear(): bool
@@ -162,7 +160,8 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
         if (!is_null($value)) {
             if ($value instanceof StreamInterface) {
                 $value->seek(0);
-                $value = $value->read($value->getSize());
+                $value->read($value->getSize());
+                //$value = $value->read($value->getSize());
             }
             return true;
         }
@@ -175,7 +174,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     public function commit(): bool
     {
-        foreach ($this->items as $key => $item) {
+        foreach ($this->items as $item) {
             if (!$this->save($item)) {
                 return false;
             }
@@ -206,8 +205,8 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
     final public function now(): int
     {
         if (is_null($this->timestamp)) {
-            $d = new \DateTime("now");
-            $this->timestamp = $d->getTimestamp();
+            $dateTime = new \DateTime("now");
+            $this->timestamp = $dateTime->getTimestamp();
         }
         return $this->timestamp;
     }

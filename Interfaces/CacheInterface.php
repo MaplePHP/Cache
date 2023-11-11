@@ -12,7 +12,7 @@ interface CacheInterface
      *
      * @return mixed The value of the item from the cache, or $default in case of cache miss.
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function get(string $key, mixed $default = null): mixed;
@@ -28,7 +28,7 @@ interface CacheInterface
      *
      * @return bool True on success and false on failure.
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool;
@@ -40,7 +40,7 @@ interface CacheInterface
      *
      * @return bool True if the item was successfully removed. False if there was an error.
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function delete(string $key): bool;
@@ -61,7 +61,7 @@ interface CacheInterface
      * @return iterable<string, mixed> A list of key => value pairs.
      * Cache keys that do not exist or are stale will have $default as value.
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \InvalidArgumentException
      *   MUST be thrown if $keys is neither an array nor a Traversable,
      *   or if any of the $keys are not a legal value.
      */
@@ -77,7 +77,7 @@ interface CacheInterface
      *
      * @return bool True on success and false on failure.
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \InvalidArgumentException
      *   MUST be thrown if $values is neither an array nor a Traversable,
      *   or if any of the $values are not a legal value.
      */
@@ -90,7 +90,7 @@ interface CacheInterface
      *
      * @return bool True if the items were successfully removed. False if there was an error.
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \InvalidArgumentException
      *   MUST be thrown if $keys is neither an array nor a Traversable,
      *   or if any of the $keys are not a legal value.
      */
@@ -108,7 +108,7 @@ interface CacheInterface
      *
      * @return bool
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
     public function has(string $key): bool;

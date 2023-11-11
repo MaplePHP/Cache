@@ -57,7 +57,6 @@ class FileSystemHandler extends CachePoolAbstract
 
     /**
      * Clear and remove all cache items and data
-     * @param  string  $key
      * @return bool
      */
     protected function setClear(): bool
@@ -90,7 +89,7 @@ class FileSystemHandler extends CachePoolAbstract
 
     /**
      * Create cache
-     * @param  string  $key
+     * @param  CacheItemInterface  $item
      * @return bool
      */
     protected function setSave(CacheItemInterface $item): bool

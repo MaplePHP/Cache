@@ -97,7 +97,5 @@ class CacheItem implements CacheItemInterface
         } else {
             throw new \InvalidArgumentException('Invalid expiration provided');
         }
-
-        return $this->expiresAt;
     }
 }

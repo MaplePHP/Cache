@@ -91,7 +91,7 @@ interface CacheItemInterface
     /**
      * Sets the relative expiration time for this cache item.
      *
-     * @param int|\DateInterval|null $time
+     * @param int|\DateInterval|null $expiration
      *   The period of time from the present after which the item MUST be considered
      *   expired. An integer parameter is understood to be the time in seconds until
      *   expiration. If null is passed explicitly, a default value MAY be used.
@@ -101,5 +101,5 @@ interface CacheItemInterface
      * @return static
      *   The called object.
      */
-    public function expiresAfter(int|\DateInterval|null $time): static;
+    public function expiresAfter(int|\DateInterval|null $expiration): static;
 }
