@@ -18,7 +18,7 @@ class FileSystemHandler extends CachePoolAbstract
     /**
      * This will Pass on cache content to CacheAbstract::getItem
      * @param  CacheItemInterface $item
-     * @return CacheItemInterface
+     * @return void
      */
     protected function setItem(CacheItemInterface $item): void
     {
@@ -40,7 +40,7 @@ class FileSystemHandler extends CachePoolAbstract
 
     /**
      * Get all set keys
-     * @return array|bool
+     * @return array
      */
     public function getAllKeys(): array
     {
@@ -108,7 +108,7 @@ class FileSystemHandler extends CachePoolAbstract
 
         $path = $this->getCacheFilePath($item->getKey());
         $size = file_put_contents($path, $data);
-        return (bool)($size !== false);
+        return ($size !== false);
     }
 
     /**

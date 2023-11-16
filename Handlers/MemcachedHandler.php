@@ -37,7 +37,7 @@ class MemcachedHandler extends CachePoolAbstract
     /**
      * Get all set keys
      * e.g. Some key may have already expired and wont be removed before @mem->get("KEY_NAME") has been called!
-     * @return array|bool
+     * @return array
      */
     public function getAllKeys(): array
     {
@@ -52,7 +52,7 @@ class MemcachedHandler extends CachePoolAbstract
     /**
      * This will Pass on cache content to CacheAbstract::getItem
      * @param  CacheItemInterface $item
-     * @return CacheItemInterface
+     * @return void
      */
     protected function setItem(CacheItemInterface $item): void
     {

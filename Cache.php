@@ -5,6 +5,7 @@ namespace PHPFuse\Cache;
 use PHPFuse\Cache\Interfaces\CacheItemPoolInterface;
 use PHPFuse\Cache\Interfaces\CacheInterface;
 use PHPFuse\Cache\Exceptions\CacheException;
+use DateInterval;
 
 class Cache implements CacheInterface
 {
@@ -21,7 +22,7 @@ class Cache implements CacheInterface
 
     /**
      * Get all set keys
-     * @return array|bool
+     * @return array
      */
     public function getAllKeys(): array
     {
@@ -42,14 +43,15 @@ class Cache implements CacheInterface
 
     /**
      * Set cache value
-     * @param string             $key   The key of the item to store.
-     * @param mixed              $value The value of the item to store.
-     * @param \DateInterval|null $ttl   TTL (seconds) cache lifetime from NOW
+     * @param string                $key   The key of the item to store.
+     * @param mixed                 $value The value of the item to store.
+     * @param DateInterval|int|null $ttl   TTL (seconds) cache lifetime from NOW
      */
-    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool
+    public function set(string $key, mixed $value, DateInterval|int|null $ttl = null): bool
     {
+        $ttl = $this->getTTL($ttl);
         $item = $this->handler->getItem($key);
-        $item->set($value)->expiresAfter((int)$ttl);
+        $item->set($value)->expiresAfter($ttl);
         return $this->handler->save($item);
     }
 
@@ -65,11 +67,11 @@ class Cache implements CacheInterface
 
     /**
      * Get multiple caches
-     * @param  iterable   $keys    The keys of the items
+     * @param  array   $keys    The keys of the items
      * @param  mixed|null $default Return default value if miss
-     * @return iterable
+     * @return array
      */
-    public function getMultiple(iterable $keys, mixed $default = null): iterable
+    public function getMultiple(array $keys, mixed $default = null): array
     {
         $new = array();
         foreach ($keys as $key) {
@@ -82,10 +84,11 @@ class Cache implements CacheInterface
      * Set cache value
      * @param array              $values   [KEY => VALUE] The key of the item to store and
      *                                     The value of the item to store.
-     * @param \DateInterval|null $ttl       TTL (seconds) cache lifetime from NOW
+     * @param DateInterval|int|null $ttl   TTL (seconds) cache lifetime from NOW
      */
-    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool
+    public function setMultiple(array $values, DateInterval|int|null $ttl = null): bool
     {
+        $ttl = $this->getTTL($ttl);
         foreach ($values as $key => $val) {
             if (!$this->set($key, $val, $ttl)) {
                 return false;
@@ -126,5 +129,20 @@ class Cache implements CacheInterface
     public function clear(): bool
     {
         return $this->handler->clear();
+    }
+    
+    /**
+     * Get TTL
+     * @param  DateInterval|int|null $interval
+     * @return int
+     */
+    protected function getTTL(DateInterval|int|null $interval): int
+    {
+        if ($interval instanceof DateInterval) {
+            $ttl = ($interval->s + ($interval->i * 60) + ($interval->h * 3600) + ($interval->days * 86400));
+        } else {
+            $ttl = (int)$interval;
+        }
+        return $ttl;
     }
 }

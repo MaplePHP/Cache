@@ -42,14 +42,6 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
 
 
     /**
-     * Get all keys
-     * @return array|false
-     */
-    abstract public function getAllKeys(): array;
-
-
-
-    /**
      * Get cache item instance
      * @param  string $key
      * @return CacheItemInterface
@@ -92,7 +84,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
     public function hasItem(string $key): bool
     {
         $item = $this->getItem($key);
-        return (bool)($item->isHit() || !is_null($item->get()));
+        return ($item->isHit() || !is_null($item->get()));
     }
 
     /**
@@ -194,8 +186,8 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     final public function hasItemExpired(CacheItemInterface $item): bool
     {
-        $expiration = (int)$item->getExpiration();
-        return (bool)($expiration > 0 && $expiration < $this->now());
+        $expiration = $item->getExpiration();
+        return ($expiration > 0 && $expiration < $this->now());
     }
 
     /**

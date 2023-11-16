@@ -16,7 +16,7 @@ class CacheItem implements CacheItemInterface
 
     /**
      * Store checke item to this middle hand class object for Cache pool
-     * @param string $key [description]
+     * @param string $key
      */
     public function __construct(string $key)
     {
@@ -75,12 +75,12 @@ class CacheItem implements CacheItemInterface
 
     /**
      * Set expiration date with Int or DateInterval
-     * @param  int|DateInterval|null   $expiration
+     * @param  DateInterval|int|null   $expiration
      * @return static
      */
-    public function expiresAfter(int|DateInterval|null $expiration): static
+    public function expiresAfter(DateInterval|int|null $expiration): static
     {
-        $this->expiresAt = $expiration;
+        $this->expiresAt = $this->getTTL($expiration);
         return $this;
     }
 
@@ -88,7 +88,7 @@ class CacheItem implements CacheItemInterface
      * Return expiration
      * @return int
      */
-    public function getExpiration(): mixed
+    public function getExpiration(): int
     {
         if ($this->expiresAt instanceof DateTimeInterface) {
             return $this->expiresAt->getTimestamp();
@@ -97,5 +97,20 @@ class CacheItem implements CacheItemInterface
         } else {
             throw new \InvalidArgumentException('Invalid expiration provided');
         }
+    }
+
+    /**
+     * Get TTL
+     * @param  DateInterval|int|null $interval
+     * @return int
+     */
+    protected function getTTL(DateInterval|int|null $interval): int
+    {
+        if ($interval instanceof DateInterval) {
+            $ttl = ($interval->s + ($interval->i * 60) + ($interval->h * 3600) + ($interval->days * 86400));
+        } else {
+            $ttl = (int)$interval;
+        }
+        return $ttl;
     }
 }

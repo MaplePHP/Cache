@@ -102,4 +102,10 @@ interface CacheItemInterface
      *   The called object.
      */
     public function expiresAfter(int|\DateInterval|null $expiration): static;
+
+    /**
+     * Return expiration
+     * @return int
+     */
+    public function getExpiration(): int;
 }

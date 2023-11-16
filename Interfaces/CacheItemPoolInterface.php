@@ -31,6 +31,7 @@ interface CacheItemPoolInterface
      */
     public function getItem(string $key): CacheItemInterface;
 
+
     /**
      * Returns a traversable set of cache items.
      *
@@ -135,4 +136,10 @@ interface CacheItemPoolInterface
      *   True if all not-yet-saved items were successfully saved or there were none. False otherwise.
      */
     public function commit(): bool;
+
+    /**
+     * Get all keys
+     * @return array
+     */
+    public function getAllKeys(): array;
 }

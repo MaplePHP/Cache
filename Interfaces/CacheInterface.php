@@ -2,6 +2,8 @@
 
 namespace PHPFuse\Cache\Interfaces;
 
+use DateInterval;
+
 interface CacheInterface
 {
     /**
@@ -22,7 +24,7 @@ interface CacheInterface
      *
      * @param string                 $key   The key of the item to store.
      * @param mixed                  $value The value of the item to store, must be serializable.
-     * @param null|int|\DateInterval $ttl   Optional. The TTL value of this item. If no value is sent and
+     * @param DateInterval|int|null $ttl   Optional. The TTL value of this item. If no value is sent and
      *                                      the driver supports TTL then the library may set a default value
      *                                      for it or let the driver take care of that.
      *
@@ -31,7 +33,7 @@ interface CacheInterface
      * @throws \InvalidArgumentException
      *   MUST be thrown if the $key string is not a legal value.
      */
-    public function set(string $key, mixed $value, null|int|\DateInterval $ttl = null): bool;
+    public function set(string $key, mixed $value, DateInterval|int|null $ttl = null): bool;
 
     /**
      * Delete an item from the cache by its unique key.
@@ -53,25 +55,18 @@ interface CacheInterface
     public function clear(): bool;
 
     /**
-     * Obtains multiple cache items by their unique keys.
-     *
-     * @param iterable<string> $keys    A list of keys that can be obtained in a single operation.
-     * @param mixed            $default Default value to return for keys that do not exist.
-     *
-     * @return iterable<string, mixed> A list of key => value pairs.
-     * Cache keys that do not exist or are stale will have $default as value.
-     *
-     * @throws \InvalidArgumentException
-     *   MUST be thrown if $keys is neither an array nor a Traversable,
-     *   or if any of the $keys are not a legal value.
+     * Get multiple caches
+     * @param  array   $keys    The keys of the items
+     * @param  mixed|null $default Return default value if miss
+     * @return array
      */
-    public function getMultiple(iterable $keys, mixed $default = null): iterable;
+    public function getMultiple(array $keys, mixed $default = null): array;
 
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
      *
-     * @param iterable               $values A list of key => value pairs for a multiple-set operation.
-     * @param null|int|\DateInterval $ttl    Optional. The TTL value of this item. If no value is sent and
+     * @param array                  $values A list of key => value pairs for a multiple-set operation.
+     * @param DateInterval|int|null $ttl    Optional. The TTL value of this item. If no value is sent and
      *                                       the driver supports TTL then the library may set a default value
      *                                       for it or let the driver take care of that.
      *
@@ -81,7 +76,7 @@ interface CacheInterface
      *   MUST be thrown if $values is neither an array nor a Traversable,
      *   or if any of the $values are not a legal value.
      */
-    public function setMultiple(iterable $values, null|int|\DateInterval $ttl = null): bool;
+    public function setMultiple(array $values, DateInterval|int|null $ttl = null): bool;
 
     /**
      * Deletes multiple cache items in a single operation.
