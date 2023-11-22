@@ -152,7 +152,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
         if (!is_null($value)) {
             if ($value instanceof StreamInterface) {
                 $value->seek(0);
-                $value->read($value->getSize());
+                $value->read((int)$value->getSize());
                 //$value = $value->read($value->getSize());
             }
             return true;
