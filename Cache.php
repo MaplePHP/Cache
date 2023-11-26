@@ -1,10 +1,10 @@
 <?php
 
-namespace PHPFuse\Cache;
+namespace MaplePHP\Cache;
 
-use PHPFuse\Cache\Interfaces\CacheItemPoolInterface;
-use PHPFuse\Cache\Interfaces\CacheInterface;
-use PHPFuse\Cache\Exceptions\CacheException;
+use MaplePHP\Cache\Interfaces\CacheItemPoolInterface;
+use MaplePHP\Cache\Interfaces\CacheInterface;
+use MaplePHP\Cache\Exceptions\CacheException;
 use DateInterval;
 
 class Cache implements CacheInterface

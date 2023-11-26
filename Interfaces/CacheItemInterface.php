@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPFuse\Cache\Interfaces;
+namespace MaplePHP\Cache\Interfaces;
 
 /**
  * CacheItemInterface defines an interface for interacting with objects inside a cache.

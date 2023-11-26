@@ -1,12 +1,12 @@
 
-# PHPFuse - Cache
-PHPFuse Cache, a clean and user-friendly caching library. PHPFuse Cache is designed to provide a seamless caching experience with simplicity and ease of use as its core principles. Whether you're familiar with **PSR-6** or **PSR-16**, this library offers a smooth and intuitive caching solution for your PHP applications.
+# MaplePHP - Cache
+MaplePHP Cache, a clean and user-friendly caching library. MaplePHP Cache is designed to provide a seamless caching experience with simplicity and ease of use as its core principles. Whether you're familiar with **PSR-6** or **PSR-16**, this library offers a smooth and intuitive caching solution for your PHP applications.
 
 ## Initiate the cache engine
-Start with initiate  the PHPFuse Cache class and pass on a Handler to it. 
+Start with initiate  the MaplePHP Cache class and pass on a Handler to it. 
 ```php
-use PHPFuse\Cache\Cache;
-use PHPFuse\Cache\Handlers\FileSystemHandler;
+use MaplePHP\Cache\Cache;
+use MaplePHP\Cache\Handlers\FileSystemHandler;
 
 $cache = new Cache(new FileSystemHandler(dirname(__FILE__)."/storage/cache"));
 ```
@@ -40,7 +40,7 @@ Save cache as a file on you system.
 
 **Arg1:** (string) Path to directory where you want to save the cache fiels
 ```php
-use PHPFuse\Cache\Handlers\FileSystemHandler;
+use MaplePHP\Cache\Handlers\FileSystemHandler;
 $fileSystem = new FileSystemHandler(dirname(__FILE__)."/storage/cache");
 ```
 
@@ -53,7 +53,7 @@ Use Memcached to save cache in memory **(high performance)**
 
 **Arg3:** (int) Weight to server (Arg is default 0 but you can also set it with default with class constant "MemcachedHandler::WEIGHT")
 ```php
-use PHPFuse\Cache\Handlers\MemcachedHandler;
+use MaplePHP\Cache\Handlers\MemcachedHandler;
 // One server
 $memcached = new MemcachedHandler(MemcachedHandler::HOST, MemcachedHandler::PORT, MemcachedHandler::WEIGHT);
 // Multiple servers
@@ -112,7 +112,7 @@ $cache->deleteMultiple(["test1", "test2"]);
 If your application needs advanced caching features, hierarchical caching, or cache tagging, PSR-6 is a more suitable choice.
 ```php
 
-use PHPFuse\Cache\Handlers\FileSystemHandler;
+use MaplePHP\Cache\Handlers\FileSystemHandler;
 $cache = new FileSystemHandler(dirname(__FILE__)."/storage/cache");
 
 $item = $cache->getItem('test');

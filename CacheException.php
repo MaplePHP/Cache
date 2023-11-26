@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPFuse\Cache;
+namespace MaplePHP\Cache;
 
-use PHPFuse\Cache\Interfaces\CacheException as CacheExceptionInterface;
+use MaplePHP\Cache\Interfaces\CacheException as CacheExceptionInterface;
 
 class CacheException extends \InvalidArgumentException implements CacheExceptionInterface
 {

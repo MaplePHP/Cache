@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPFuse\Cache\Interfaces;
+namespace MaplePHP\Cache\Interfaces;
 
 /**
  * CacheItemPoolInterface generates CacheItemInterface objects.

@@ -1,12 +1,12 @@
 <?php
 
-namespace PHPFuse\Cache;
+namespace MaplePHP\Cache;
 
-use PHPFuse\Cache\Interfaces\CacheItemInterface;
-use PHPFuse\Cache\Interfaces\CacheItemPoolInterface;
-use PHPFuse\Http\Interfaces\StreamInterface;
-use PHPFuse\Cache\Exceptions\InvalidArgumentException;
-use PHPFuse\Cache\CacheItem;
+use MaplePHP\Cache\Interfaces\CacheItemInterface;
+use MaplePHP\Cache\Interfaces\CacheItemPoolInterface;
+use MaplePHP\Http\Interfaces\StreamInterface;
+use MaplePHP\Cache\Exceptions\InvalidArgumentException;
+use MaplePHP\Cache\CacheItem;
 
 abstract class CachePoolAbstract implements CacheItemPoolInterface
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PHPFuse\Cache\Handlers;
+namespace MaplePHP\Cache\Handlers;
 
-use PHPFuse\Cache\Interfaces\CacheItemInterface;
-use PHPFuse\Cache\Exceptions\CacheException;
-use PHPFuse\Cache\CachePoolAbstract;
+use MaplePHP\Cache\Interfaces\CacheItemInterface;
+use MaplePHP\Cache\Exceptions\CacheException;
+use MaplePHP\Cache\CachePoolAbstract;
 use Memcached;
 
 class MemcachedHandler extends CachePoolAbstract

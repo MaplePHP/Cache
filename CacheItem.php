@@ -1,8 +1,8 @@
 <?php
 
-namespace PHPFuse\Cache;
+namespace MaplePHP\Cache;
 
-use PHPFuse\Cache\Interfaces\CacheItemInterface;
+use MaplePHP\Cache\Interfaces\CacheItemInterface;
 use DateTimeInterface;
 use DateInterval;
 use DateTime;
