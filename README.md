@@ -2,6 +2,11 @@
 # MaplePHP - Cache
 MaplePHP Cache, a clean and user-friendly caching library. MaplePHP Cache is designed to provide a seamless caching experience with simplicity and ease of use as its core principles. Whether you're familiar with **PSR-6** or **PSR-16**, this library offers a smooth and intuitive caching solution for your PHP applications.
 
+## Installation
+```
+composer require maplephp/cache
+```
+
 ## Initiate the cache engine
 Start with initiate  the MaplePHP Cache class and pass on a Handler to it. 
 ```php
