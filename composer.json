@@ -1,0 +1,27 @@
+{
+    "name": "MaplePHP/Cache",
+    "type": "library",
+    "description": "MaplePHP Cache, user-friendly caching library with full PSR-6 and PSR-16 support.",
+    "keywords": ["caching", "psr6", "psr16", "FileSystem", "Memcached"],
+    "homepage": "https://wazabii.se",
+    "license": "Apache-2.0 license",
+    "authors": [
+        {
+            "name": "Daniel Ronkainen",
+            "email": "daniel.ronkainen@wazabii.se"
+        },
+        {
+            "name": "MaplePHP",
+            "homepage": "https://wazabii.se"
+        }
+    ],
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MaplePHP\\Cache\\Handlers\\": "app/Libraries/Cache/Handlers/"
+        }
+    },
+    "minimum-stability": "dev"
+}
