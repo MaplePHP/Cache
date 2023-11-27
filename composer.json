@@ -1,5 +1,5 @@
 {
-    "name": "MaplePHP/Cache",
+    "name": "maplephp/cache",
     "type": "library",
     "description": "MaplePHP Cache, user-friendly caching library with full PSR-6 and PSR-16 support.",
     "keywords": ["caching", "psr6", "psr16", "FileSystem", "Memcached"],
