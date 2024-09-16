@@ -139,6 +139,7 @@ interface CacheItemPoolInterface
 
     /**
      * Get all keys
+     *
      * @return array
      */
     public function getAllKeys(): array;
