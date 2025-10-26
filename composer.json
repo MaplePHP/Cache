@@ -22,7 +22,7 @@
     }
   ],
   "require": {
-    "php": ">=8.0",
+    "php": ">=8.2",
     "psr/cache": "^3.0",
     "psr/simple-cache": "^3.0"
   },
