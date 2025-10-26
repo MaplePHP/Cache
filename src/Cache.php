@@ -2,9 +2,8 @@
 
 namespace MaplePHP\Cache;
 
-use MaplePHP\Cache\Interfaces\CacheItemPoolInterface;
-use MaplePHP\Cache\Interfaces\CacheInterface;
-use MaplePHP\Cache\Exceptions\CacheException;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\SimpleCache\CacheInterface;
 use DateInterval;
 
 class Cache implements CacheInterface
@@ -73,7 +72,7 @@ class Cache implements CacheInterface
      */
     public function getMultiple(array $keys, mixed $default = null): array
     {
-        $new = array();
+        $new = [];
         foreach ($keys as $key) {
             $new[$key] = $this->get($key, $default);
         }
@@ -130,7 +129,7 @@ class Cache implements CacheInterface
     {
         return $this->handler->clear();
     }
-    
+
     /**
      * Get TTL
      * @param  DateInterval|int|null $interval

@@ -2,10 +2,9 @@
 
 namespace MaplePHP\Cache;
 
-use MaplePHP\Cache\Interfaces\CacheItemInterface;
+use Psr\Cache\CacheItemInterface;
 use DateTimeInterface;
 use DateInterval;
-use DateTime;
 
 class CacheItem implements CacheItemInterface
 {

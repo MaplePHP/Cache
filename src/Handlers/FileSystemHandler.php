@@ -2,7 +2,7 @@
 
 namespace MaplePHP\Cache\Handlers;
 
-use MaplePHP\Cache\Interfaces\CacheItemInterface;
+use Psr\Cache\CacheItemInterface;
 use MaplePHP\Cache\Exceptions\CacheException;
 use MaplePHP\Cache\CachePoolAbstract;
 
@@ -48,7 +48,7 @@ class FileSystemHandler extends CachePoolAbstract
      */
     public function getAllKeys(): array
     {
-        $new = array();
+        $new = [];
         $files = glob("$this->cacheDirectory/*.cache");
         foreach ($files as $file) {
             $file = basename($file);

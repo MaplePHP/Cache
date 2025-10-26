@@ -2,7 +2,7 @@
 
 namespace MaplePHP\Cache\Exceptions;
 
-use MaplePHP\Cache\Interfaces\InvalidArgumentException as InvalidArgumentExceptionInterface;
+use Psr\Cache\InvalidArgumentException as InvalidArgumentExceptionInterface;
 
 class InvalidArgumentException extends \InvalidArgumentException implements InvalidArgumentExceptionInterface
 {

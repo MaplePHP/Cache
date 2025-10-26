@@ -2,15 +2,14 @@
 
 namespace MaplePHP\Cache;
 
-use MaplePHP\Cache\Interfaces\CacheItemInterface;
-use MaplePHP\Cache\Interfaces\CacheItemPoolInterface;
-use MaplePHP\Http\Interfaces\StreamInterface;
+use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Http\Message\StreamInterface;
 use MaplePHP\Cache\Exceptions\InvalidArgumentException;
-use MaplePHP\Cache\CacheItem;
 
 abstract class CachePoolAbstract implements CacheItemPoolInterface
 {
-    private $items = array();
+    private $items = [];
     private $timestamp;
 
     /**
@@ -55,7 +54,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
             $this->setItem($this->items[$key]);
             $value = $this->items[$key]->get();
 
-            if (!is_null($value) && $this->hasItemExpired($this->items[$key])) {
+            if ($value !== null && $this->hasItemExpired($this->items[$key])) {
                 $this->items[$key] = new CacheItem($key);
             }
         }
@@ -69,7 +68,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     public function getItems(array $keys = []): iterable
     {
-        $items = array();
+        $items = [];
         foreach ($keys as $key) {
             $items[$key] = $this->getItem($key);
         }
@@ -84,7 +83,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
     public function hasItem(string $key): bool
     {
         $item = $this->getItem($key);
-        return ($item->isHit() || !is_null($item->get()));
+        return ($item->isHit() || $item->get() !== null);
     }
 
     /**
@@ -122,7 +121,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     public function clear(): bool
     {
-        $this->items = array();
+        $this->items = [];
         return $this->setClear();
     }
 
@@ -149,7 +148,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
     public function saveDeferred(CacheItemInterface $item): bool
     {
         $value = $item->get();
-        if (!is_null($value)) {
+        if ($value !== null) {
             if ($value instanceof StreamInterface) {
                 $value->seek(0);
                 $value->read((int)$value->getSize());
@@ -196,7 +195,7 @@ abstract class CachePoolAbstract implements CacheItemPoolInterface
      */
     final public function now(): int
     {
-        if (is_null($this->timestamp)) {
+        if ($this->timestamp === null) {
             $dateTime = new \DateTime("now");
             $this->timestamp = $dateTime->getTimestamp();
         }

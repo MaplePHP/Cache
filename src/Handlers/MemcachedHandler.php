@@ -2,10 +2,9 @@
 
 namespace MaplePHP\Cache\Handlers;
 
-use MaplePHP\Cache\Interfaces\CacheItemInterface;
+use Psr\Cache\CacheItemInterface;
 use MaplePHP\Cache\Exceptions\CacheException;
 use MaplePHP\Cache\CachePoolAbstract;
-use MaplePHP\DTO\Format\Arr;
 use Memcached;
 
 class MemcachedHandler extends CachePoolAbstract
@@ -15,7 +14,7 @@ class MemcachedHandler extends CachePoolAbstract
     public const WEIGHT = 0;
 
     private $handler;
-    private $servers = array();
+    private $servers = [];
     private $stats;
 
     /**
@@ -149,7 +148,7 @@ class MemcachedHandler extends CachePoolAbstract
      */
     final protected function connect(): void
     {
-        if (is_null($this->stats)) {
+        if ($this->stats === null) {
             $this->validateServers();
             $this->handler->addServers($this->servers);
             $this->stats = $this->handler->getStats();
