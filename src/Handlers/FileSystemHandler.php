@@ -2,14 +2,18 @@
 
 namespace MaplePHP\Cache\Handlers;
 
-use MaplePHP\Cache\Interfaces\CacheItemInterface;
+use Psr\Cache\CacheItemInterface;
 use MaplePHP\Cache\Exceptions\CacheException;
 use MaplePHP\Cache\CachePoolAbstract;
 
 class FileSystemHandler extends CachePoolAbstract
 {
-    private $cacheDirectory;
+    private string $cacheDirectory;
 
+    /**
+     * Init the File system handler
+     * @param string $cacheDirectory
+     */
     public function __construct(string $cacheDirectory)
     {
         $this->cacheDirectory = rtrim($cacheDirectory, "/");
@@ -27,7 +31,7 @@ class FileSystemHandler extends CachePoolAbstract
 
         if (is_file($path)) {
             if (!is_readable($path)) {
-                throw new CacheException("The cache file ({$path}) is not readable!", 1);
+                throw new CacheException("The cache file ($path) is not readable!", 1);
             }
             $data = file_get_contents($path);
 
@@ -44,8 +48,8 @@ class FileSystemHandler extends CachePoolAbstract
      */
     public function getAllKeys(): array
     {
-        $new = array();
-        $files = glob("{$this->cacheDirectory}/*.cache");
+        $new = [];
+        $files = glob("$this->cacheDirectory/*.cache");
         foreach ($files as $file) {
             $file = basename($file);
             $exp = explode(".", $file);
@@ -61,7 +65,7 @@ class FileSystemHandler extends CachePoolAbstract
      */
     protected function setClear(): bool
     {
-        $files = glob("{$this->cacheDirectory}/*.cache");
+        $files = glob("$this->cacheDirectory/*.cache");
         foreach ($files as $file) {
             if (is_file($file) && is_writable($file)) {
                 unlink($file);
@@ -95,7 +99,7 @@ class FileSystemHandler extends CachePoolAbstract
     protected function setSave(CacheItemInterface $item): bool
     {
         if (!is_dir($this->cacheDirectory)) {
-            throw new CacheException("The cache directory is not a directory: {$this->cacheDirectory}", 1);
+            throw new CacheException("The cache directory is not a directory: $this->cacheDirectory", 1);
         }
         if (!is_writeable($this->cacheDirectory)) {
             throw new CacheException("The cache filesystem directory is not writable!", 1);
@@ -118,6 +122,6 @@ class FileSystemHandler extends CachePoolAbstract
      */
     protected function getCacheFilePath(string $key): string
     {
-        return "{$this->cacheDirectory}/{$key}.cache";
+        return "$this->cacheDirectory/$key.cache";
     }
 }

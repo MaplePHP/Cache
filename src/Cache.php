@@ -2,9 +2,8 @@
 
 namespace MaplePHP\Cache;
 
-use MaplePHP\Cache\Interfaces\CacheItemPoolInterface;
-use MaplePHP\Cache\Interfaces\CacheInterface;
-use MaplePHP\Cache\Exceptions\CacheException;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\SimpleCache\CacheInterface;
 use DateInterval;
 
 class Cache implements CacheInterface
@@ -31,8 +30,8 @@ class Cache implements CacheInterface
 
     /**
      * Get cache value
-     * @param  string     $key      The key of the item
-     * @param  mixed|null $default  Return default value if miss
+     * @param string $key The key of the item
+     * @param mixed|null $default Return default value if miss
      * @return mixed
      */
     public function get(string $key, mixed $default = null): mixed
@@ -43,9 +42,9 @@ class Cache implements CacheInterface
 
     /**
      * Set cache value
-     * @param string                $key   The key of the item to store.
-     * @param mixed                 $value The value of the item to store.
-     * @param DateInterval|int|null $ttl   TTL (seconds) cache lifetime from NOW
+     * @param string $key The key of the item to store.
+     * @param mixed $value The value of the item to store.
+     * @param DateInterval|int|null $ttl TTL (seconds) cache lifetime from NOW
      */
     public function set(string $key, mixed $value, DateInterval|int|null $ttl = null): bool
     {
@@ -57,7 +56,7 @@ class Cache implements CacheInterface
 
     /**
      * Delete cache
-     * @param  string $key The key of the item to delete.
+     * @param string $key The key of the item to delete.
      * @return bool
      */
     public function delete(string $key): bool
@@ -67,13 +66,13 @@ class Cache implements CacheInterface
 
     /**
      * Get multiple caches
-     * @param  array   $keys    The keys of the items
-     * @param  mixed|null $default Return default value if miss
+     * @param iterable $keys The keys of the items
+     * @param mixed|null $default Return default value if miss
      * @return array
      */
-    public function getMultiple(array $keys, mixed $default = null): array
+    public function getMultiple(iterable $keys, mixed $default = null): array
     {
-        $new = array();
+        $new = [];
         foreach ($keys as $key) {
             $new[$key] = $this->get($key, $default);
         }
@@ -82,11 +81,11 @@ class Cache implements CacheInterface
 
     /**
      * Set cache value
-     * @param array              $values   [KEY => VALUE] The key of the item to store and
+     * @param iterable $values [KEY => VALUE] The key of the item to store and
      *                                     The value of the item to store.
-     * @param DateInterval|int|null $ttl   TTL (seconds) cache lifetime from NOW
+     * @param DateInterval|int|null $ttl TTL (seconds) cache lifetime from NOW
      */
-    public function setMultiple(array $values, DateInterval|int|null $ttl = null): bool
+    public function setMultiple(iterable $values, DateInterval|int|null $ttl = null): bool
     {
         $ttl = $this->getTTL($ttl);
         foreach ($values as $key => $val) {
@@ -99,7 +98,7 @@ class Cache implements CacheInterface
 
     /**
      * Delete multiple caches
-     * @param  iterable $keys The keys of the items to delete
+     * @param iterable $keys The keys of the items to delete
      * @return bool
      */
     public function deleteMultiple(iterable $keys): bool
@@ -114,7 +113,7 @@ class Cache implements CacheInterface
 
     /**
      * Item exists or has a hit
-     * @param  string  $key The keys of the item
+     * @param string $key The keys of the item
      * @return boolean
      */
     public function has(string $key): bool
@@ -130,10 +129,10 @@ class Cache implements CacheInterface
     {
         return $this->handler->clear();
     }
-    
+
     /**
      * Get TTL
-     * @param  DateInterval|int|null $interval
+     * @param DateInterval|int|null $interval
      * @return int
      */
     protected function getTTL(DateInterval|int|null $interval): int

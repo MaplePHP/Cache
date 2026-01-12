@@ -2,7 +2,7 @@
 
 namespace MaplePHP\Cache\Handlers;
 
-use MaplePHP\Cache\Interfaces\CacheItemInterface;
+use Psr\Cache\CacheItemInterface;
 use MaplePHP\Cache\Exceptions\CacheException;
 use MaplePHP\Cache\CachePoolAbstract;
 use Memcached;
@@ -14,16 +14,21 @@ class MemcachedHandler extends CachePoolAbstract
     public const WEIGHT = 0;
 
     private $handler;
-    private $servers = array();
+    private $servers = [];
     private $stats;
 
+    /**
+     * Init the memcache handler
+     * @param string|array $host
+     * @param int|null $port
+     * @param int $weight
+     */
     public function __construct(string|array $host, ?int $port = null, int $weight = 0)
     {
 
         if (!class_exists("Memcached")) {
             throw new CacheException("The PHP package \"Memcached\" is missing!", 1);
         }
-
 
         $this->handler = new Memcached();
         if (is_string($host)) {
@@ -36,7 +41,7 @@ class MemcachedHandler extends CachePoolAbstract
 
     /**
      * Get all set keys
-     * e.g. Some key may have already expired and wont be removed before @mem->get("KEY_NAME") has been called!
+     * e.g. Some key may have already expired and won't be removed before @mem->get("KEY_NAME") has been called!
      * @return array
      */
     public function getAllKeys(): array
@@ -143,7 +148,7 @@ class MemcachedHandler extends CachePoolAbstract
      */
     final protected function connect(): void
     {
-        if (is_null($this->stats)) {
+        if ($this->stats === null) {
             $this->validateServers();
             $this->handler->addServers($this->servers);
             $this->stats = $this->handler->getStats();
